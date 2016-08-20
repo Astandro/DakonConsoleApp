@@ -36,20 +36,25 @@ namespace Dakon
 
             //Permainan dimulai oleh Player 1
             tangan.playerInTurn = "Player 1";
-            Console.Write("\nGiliran "+tangan.playerInTurn+", Silahkan pilih posisi (1-7) : ");
 
-            pilihDanAmbilIsiLubang();
+            while(papanDakon1.getTotalMarblesInStoreHouses()!=98)
+            {
+                Console.Write("\nGiliran " + tangan.playerInTurn + ", Silahkan pilih posisi (1-7) : ");
+                pilihDanAmbilIsiLubang();
 
-            Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
-            papanDakon1.printPapanDakon();
+                Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
+                while (tangan.marblesDiTangan != 0)
+                {
+                    geserPosisiTangan();
+                }
 
-            geserPosisiTangan();
-            geserPosisiTangan();
-            geserPosisiTangan();
-            geserPosisiTangan();
-            geserPosisiTangan();
-            geserPosisiTangan();
-            geserPosisiTangan();
+                if (!papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
+                    switchPlayer();
+                else
+                    Console.WriteLine(tangan.playerInTurn + " mendapatkan jatah giliran lagi karena berhenti di storehouse");
+
+                papanDakon1.printPapanDakon();
+            }
 
             Console.WriteLine(tangan.playerInTurn + " berada pada posisi : " + tangan.indexPosisi + " dengan jumlah marbles di tangan : " + tangan.marblesDiTangan);
             papanDakon1.printPapanDakon();
@@ -104,37 +109,43 @@ namespace Dakon
             if (papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse && papanDakon1.listLubang[tangan.indexPosisi].owner != tangan.playerInTurn)
                 tangan.indexPosisi++;
 
-            tangan.marblesDiTangan--;
+            if (!papanDakon1.listLubang[tangan.indexPosisi].isBurnt)
+            {
+                tangan.marblesDiTangan--;
 
-            // 3. jika biji di tangan habis pada lubang yang terdapat biji, maka perputaran dilanjutkan dengan mengambil seluruh biji pada lubang tersebut
-            if (tangan.marblesDiTangan == 0 && !papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
-            {
-                tangan.marblesDiTangan = papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
-                papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 0;
-                papanDakon1.listLubang[tangan.indexPosisi].isEmpty = true;
-            }
-            // 6. jika biji di tangan habis pada lubang kosong milik sendiri, maka ambil seluruh biji pada lubang milik musuh yang berseberangan
-            else if (tangan.marblesDiTangan == 0 && papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse && papanDakon1.listLubang[tangan.indexPosisi].owner == tangan.playerInTurn)
-            {
-                if (tangan.playerInTurn == "Player 1")
+                // 3. jika biji di tangan habis pada lubang yang terdapat biji, maka perputaran dilanjutkan dengan mengambil seluruh biji pada lubang tersebut
+                if (tangan.marblesDiTangan == 0 && !papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
                 {
-                    papanDakon1.listLubang[8].marblesCount += papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
-                    papanDakon1.listLubang[16 - tangan.indexPosisi].marblesCount = 0;
-                    papanDakon1.listLubang[16 - tangan.indexPosisi].isEmpty = true;
+                    tangan.marblesDiTangan = papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
+                    papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 0;
+                    papanDakon1.listLubang[tangan.indexPosisi].isEmpty = true;
                 }
+                // 6. jika biji di tangan habis pada lubang kosong milik sendiri, maka ambil seluruh biji pada lubang milik musuh yang berseberangan
+                else if (tangan.marblesDiTangan == 0 && papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse && papanDakon1.listLubang[tangan.indexPosisi].owner == tangan.playerInTurn)
+                {
+                    papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 1;
+                    papanDakon1.listLubang[tangan.indexPosisi].isEmpty = false;
+
+                    if (tangan.playerInTurn == "Player 1")
+                    {
+                        papanDakon1.listLubang[8].marblesCount += papanDakon1.listLubang[16 - tangan.indexPosisi].marblesCount;
+                        papanDakon1.listLubang[16 - tangan.indexPosisi].marblesCount = 0;
+                        papanDakon1.listLubang[16 - tangan.indexPosisi].isEmpty = true;
+                    }
+                    else
+                    {
+                        papanDakon1.listLubang[0].marblesCount += papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].marblesCount;
+                        papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].marblesCount = 0;
+                        papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].isEmpty = true;
+                    }
+                }
+                // 1. berjalan secara berputar searah jarum jam
+                // 2. deposit biji pada store house (lubang besar) milik sendiri bukan milik musuh
                 else
                 {
-                    papanDakon1.listLubang[0].marblesCount += papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
-                    papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].marblesCount = 0;
-                    papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].isEmpty = true;
+                    papanDakon1.listLubang[tangan.indexPosisi].marblesCount++;
+                    papanDakon1.listLubang[tangan.indexPosisi].isEmpty = false;
                 }
-            }
-            // 1. berjalan secara berputar searah jarum jam
-            // 2. deposit biji pada store house (lubang besar) milik sendiri bukan milik musuh
-            else
-            {
-                papanDakon1.listLubang[tangan.indexPosisi].marblesCount++;
-                papanDakon1.listLubang[tangan.indexPosisi].isEmpty = false;
             }
 
         }

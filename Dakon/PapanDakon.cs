@@ -76,6 +76,8 @@ namespace Dakon
                 Console.Write(listLubang[j].marblesCount);
                 if (listLubang[j].marblesCount < 10)
                     Console.Write("  | ");
+                else
+                    Console.Write(" | ");
             }
             Console.WriteLine("\n");
             Console.Write("P2:");
