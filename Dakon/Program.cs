@@ -22,10 +22,13 @@ namespace Dakon
         //   jika tidak cukup untuk memenuhi 1 lubang, maka sisanya dibiarkan di storehouse
         //2. jika ada lubang yang kosong/tidak terisi, maka lubang tersebut dinyatakan burnt/tidak bisa digunakan
 
+        static PapanDakon papanDakon1;
+        static PointerTangan tangan;
+
         static void Main(string[] args)
         {
-            PapanDakon papanDakon1 = PapanDakon.GetInstance();
-            PointerTangan tangan = new PointerTangan();
+            papanDakon1 = PapanDakon.GetInstance();
+            tangan = new PointerTangan();
 
             //Round 1
             //Print Kondisi awal Papan Dakon pada Round 1 
@@ -34,18 +37,35 @@ namespace Dakon
             //Permainan dimulai oleh Player 1
             tangan.playerInTurn = "Player 1";
             Console.Write("\nGiliran "+tangan.playerInTurn+", Silahkan pilih posisi (1-7) : ");
-            
+
+            pilihDanAmbilIsiLubang();
+
+            Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
+            papanDakon1.printPapanDakon();
+
+            geserPosisiTangan();
+            geserPosisiTangan();
+            geserPosisiTangan();
+            geserPosisiTangan();
+            geserPosisiTangan();
+            geserPosisiTangan();
+            geserPosisiTangan();
+
+            Console.WriteLine(tangan.playerInTurn + " berada pada posisi : " + tangan.indexPosisi + " dengan jumlah marbles di tangan : " + tangan.marblesDiTangan);
+            papanDakon1.printPapanDakon();
+
+            Console.ReadLine();
+        }
+
+        public static void pilihDanAmbilIsiLubang()
+        {
             //Player 1 memilih house yang akan digunakan sebagai titik awal giliran
             tangan.indexPosisi = getHousePilihanUser(tangan.playerInTurn);
 
             //Ambil seluruh marbles pada lubang/house tersebut
             tangan.marblesDiTangan = papanDakon1.listLubang[tangan.indexPosisi].marblesCount;
             papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 0;
-
-            Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
-            papanDakon1.printPapanDakon();
-
-            Console.ReadLine();
+            papanDakon1.listLubang[tangan.indexPosisi].isEmpty = true;
         }
 
         public static int getHousePilihanUser(string playerInThisTurn)
@@ -71,6 +91,60 @@ namespace Dakon
                 return houseNum;
             else
                 return houseNum + 8;
+        }
+
+        public static void geserPosisiTangan()
+        {
+            if (tangan.indexPosisi != 15)
+                tangan.indexPosisi++;
+            else
+                tangan.indexPosisi = 0;
+
+            // 2. deposit biji pada store house (lubang besar) milik sendiri bukan milik musuh
+            if (papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse && papanDakon1.listLubang[tangan.indexPosisi].owner != tangan.playerInTurn)
+                tangan.indexPosisi++;
+
+            tangan.marblesDiTangan--;
+
+            // 3. jika biji di tangan habis pada lubang yang terdapat biji, maka perputaran dilanjutkan dengan mengambil seluruh biji pada lubang tersebut
+            if (tangan.marblesDiTangan == 0 && !papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
+            {
+                tangan.marblesDiTangan = papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
+                papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 0;
+                papanDakon1.listLubang[tangan.indexPosisi].isEmpty = true;
+            }
+            // 6. jika biji di tangan habis pada lubang kosong milik sendiri, maka ambil seluruh biji pada lubang milik musuh yang berseberangan
+            else if (tangan.marblesDiTangan == 0 && papanDakon1.listLubang[tangan.indexPosisi].isEmpty && !papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse && papanDakon1.listLubang[tangan.indexPosisi].owner == tangan.playerInTurn)
+            {
+                if (tangan.playerInTurn == "Player 1")
+                {
+                    papanDakon1.listLubang[8].marblesCount += papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
+                    papanDakon1.listLubang[16 - tangan.indexPosisi].marblesCount = 0;
+                    papanDakon1.listLubang[16 - tangan.indexPosisi].isEmpty = true;
+                }
+                else
+                {
+                    papanDakon1.listLubang[0].marblesCount += papanDakon1.listLubang[tangan.indexPosisi].marblesCount + 1;
+                    papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].marblesCount = 0;
+                    papanDakon1.listLubang[7 - (tangan.indexPosisi - 9)].isEmpty = true;
+                }
+            }
+            // 1. berjalan secara berputar searah jarum jam
+            // 2. deposit biji pada store house (lubang besar) milik sendiri bukan milik musuh
+            else
+            {
+                papanDakon1.listLubang[tangan.indexPosisi].marblesCount++;
+                papanDakon1.listLubang[tangan.indexPosisi].isEmpty = false;
+            }
+
+        }
+
+        public static void switchPlayer()
+        {
+            if (tangan.playerInTurn == "Player 1")
+                tangan.playerInTurn = "Player 2";
+            else
+                tangan.playerInTurn = "Player 1";
         }
     }
 }
