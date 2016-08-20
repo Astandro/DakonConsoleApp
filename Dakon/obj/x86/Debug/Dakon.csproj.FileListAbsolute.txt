@@ -1,0 +1,5 @@
+D:\DakonConsoleApp\Dakon\Dakon\bin\Debug\Dakon.exe
+D:\DakonConsoleApp\Dakon\Dakon\bin\Debug\Dakon.pdb
+D:\DakonConsoleApp\Dakon\Dakon\obj\x86\Debug\Dakon.exe
+D:\DakonConsoleApp\Dakon\Dakon\obj\x86\Debug\Dakon.pdb
+D:\DakonConsoleApp\Dakon\Dakon\obj\x86\Debug\Dakon.csprojResolveAssemblyReference.cache
