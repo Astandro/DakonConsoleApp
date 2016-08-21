@@ -126,7 +126,7 @@ namespace Dakon
                 {
                     listLubang[i].isEmpty = true;
                     listLubang[i].isBurnt = true;
-                    listLubang[i].marblesCount = 0;
+                    listLubang[i].marblesCount = -1;
                 }
                 else
                 {

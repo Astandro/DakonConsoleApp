@@ -8,6 +8,7 @@ namespace Dakon
     class Program
     {
         //Referensi : https://www.youtube.com/watch?v=zAGYhT05AIc
+        //Game contoh : http://dakon-the-game.appspot.com/
         //Kondisi-kondisi permainan dakon :
         //Ronde 1
         // 1. berjalan secara berputar searah jarum jam
@@ -40,6 +41,7 @@ namespace Dakon
             while(papanDakon1.getTotalMarblesInStoreHouses()!=98)
             {
                 Console.Write("\nGiliran " + tangan.playerInTurn + ", Silahkan pilih posisi (1-7) : ");
+
                 pilihDanAmbilIsiLubang();
 
                 Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
@@ -56,7 +58,7 @@ namespace Dakon
                 papanDakon1.printPapanDakon();
             }
 
-            Console.WriteLine(tangan.playerInTurn + " berada pada posisi : " + tangan.indexPosisi + " dengan jumlah marbles di tangan : " + tangan.marblesDiTangan);
+            Console.WriteLine("Ronde 1 telah berakhir\nSkor sementara P1 : " + papanDakon1.listLubang[8].marblesCount + " P2 : " + papanDakon1.listLubang[0].marblesCount);
             papanDakon1.printPapanDakon();
 
             Console.ReadLine();
