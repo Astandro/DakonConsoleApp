@@ -95,6 +95,9 @@ namespace Dakon
 
         public void startSecondRound()
         {
+            Console.WriteLine("Ronde 1 telah berakhir\nSkor sementara P1 : " + listLubang[8].marblesCount + " P2 : " + listLubang[0].marblesCount);
+            Console.WriteLine("Ronde 2 akan dimulai, Player yang kalah akan memulai duluan");
+
             int p1HouseCountWillGotMarbles = 0;
             int p2HouseCountWillGotMarbles = 0;
             if (listLubang[8].marblesCount > 49)

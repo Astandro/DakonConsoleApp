@@ -26,6 +26,7 @@ namespace Dakon
         static PapanDakon papanDakon1;
         static PointerTangan tangan;
 
+
         static void Main(string[] args)
         {
             papanDakon1 = PapanDakon.GetInstance();
@@ -40,32 +41,53 @@ namespace Dakon
 
             while(papanDakon1.getTotalMarblesInStoreHouses()!=98)
             {
-                Console.Write("\nGiliran " + tangan.playerInTurn + ", Silahkan pilih posisi (1-7) : ");
-
+                //Get user input
                 pilihDanAmbilIsiLubang();
 
-                Console.WriteLine(tangan.playerInTurn +" memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
+                //Geser posisi tangan selama permainan searah jarum jam
                 while (tangan.marblesDiTangan != 0)
                 {
                     geserPosisiTangan();
                 }
 
+                //jika posisi berhenti bukan di storehouse, maka giliran pemain tersebut berakhir
                 if (!papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
                     switchPlayer();
                 else
-                    Console.WriteLine(tangan.playerInTurn + " mendapatkan jatah giliran lagi karena berhenti di storehouse");
+                    printGetAdditionlRoundMessage();  //mendapat jatah 1 giliran lagi
 
                 papanDakon1.printPapanDakon();
             }
 
-            Console.WriteLine("Ronde 1 telah berakhir\nSkor sementara P1 : " + papanDakon1.listLubang[8].marblesCount + " P2 : " + papanDakon1.listLubang[0].marblesCount);
+            //Inisialisasi ronde ke 2
+            papanDakon1.startSecondRound();
+            //Inisialisasi Player yang berhak memulai duluan di ronde ke 2
+            setSecondRoundFirstPlayer();
+            //Print kondisi awal papan dakon pada ronde ke 2
             papanDakon1.printPapanDakon();
 
             Console.ReadLine();
         }
 
+
+
+        public static void printGetAdditionlRoundMessage()
+        {
+            Console.WriteLine(tangan.playerInTurn + " mendapatkan jatah giliran lagi karena berhenti di storehouse");
+        }
+
+        public static void setSecondRoundFirstPlayer()
+        {
+            if (papanDakon1.listLubang[0].marblesCount > papanDakon1.listLubang[8].marblesCount)
+                tangan.playerInTurn = "Player 1";
+            else
+                tangan.playerInTurn = "Player 2";
+        }
+
         public static void pilihDanAmbilIsiLubang()
         {
+            Console.Write("\nGiliran " + tangan.playerInTurn + ", Silahkan pilih posisi (1-7) : ");
+
             //Player 1 memilih house yang akan digunakan sebagai titik awal giliran
             tangan.indexPosisi = getHousePilihanUser(tangan.playerInTurn);
 
@@ -73,6 +95,8 @@ namespace Dakon
             tangan.marblesDiTangan = papanDakon1.listLubang[tangan.indexPosisi].marblesCount;
             papanDakon1.listLubang[tangan.indexPosisi].marblesCount = 0;
             papanDakon1.listLubang[tangan.indexPosisi].isEmpty = true;
+
+            Console.WriteLine(tangan.playerInTurn + " memilih posisi : " + tangan.indexPosisi + " dengan jumlah marbles " + tangan.marblesDiTangan);
         }
 
         public static int getHousePilihanUser(string playerInThisTurn)
