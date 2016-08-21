@@ -129,7 +129,7 @@ namespace Dakon
                 {
                     listLubang[i].isEmpty = true;
                     listLubang[i].isBurnt = true;
-                    listLubang[i].marblesCount = -1;
+                    listLubang[i].marblesCount = 0;
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace Dakon
             //Refill P2 Houses
             for (int i = 9; i < 16; i++)
             {
-                if (i <= (15 - p1HouseCountWillGotMarbles))
+                if (i <= (15 - p2HouseCountWillGotMarbles))
                 {
                     listLubang[i].isEmpty = true;
                     listLubang[i].isBurnt = true;

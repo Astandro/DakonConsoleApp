@@ -26,7 +26,6 @@ namespace Dakon
         static PapanDakon papanDakon1;
         static PointerTangan tangan;
 
-
         static void Main(string[] args)
         {
             papanDakon1 = PapanDakon.GetInstance();
@@ -39,6 +38,7 @@ namespace Dakon
             //Permainan dimulai oleh Player 1
             tangan.playerInTurn = "Player 1";
 
+            //Looping giliran pada Ronde 1
             while(papanDakon1.getTotalMarblesInStoreHouses()!=98)
             {
                 //Get user input
@@ -59,17 +59,51 @@ namespace Dakon
                 papanDakon1.printPapanDakon();
             }
 
-            //Inisialisasi ronde ke 2
-            papanDakon1.startSecondRound();
             //Inisialisasi Player yang berhak memulai duluan di ronde ke 2
             setSecondRoundFirstPlayer();
+            //Inisialisasi ronde ke 2
+            papanDakon1.startSecondRound();
             //Print kondisi awal papan dakon pada ronde ke 2
             papanDakon1.printPapanDakon();
+
+            //Looping giliran pada Ronde 2
+            while (papanDakon1.getTotalMarblesInStoreHouses() != 98)
+            {
+                //Get user input
+                pilihDanAmbilIsiLubang();
+
+                //Geser posisi tangan selama permainan searah jarum jam
+                while (tangan.marblesDiTangan != 0)
+                {
+                    geserPosisiTangan();
+                }
+
+                //jika posisi berhenti bukan di storehouse, maka giliran pemain tersebut berakhir
+                if (!papanDakon1.listLubang[tangan.indexPosisi].isStoreHouse)
+                    switchPlayer();
+                else
+                    printGetAdditionlRoundMessage();  //mendapat jatah 1 giliran lagi
+
+                papanDakon1.printPapanDakon();
+            }
+
+            showFinalMessage();
 
             Console.ReadLine();
         }
 
+        public static void showFinalMessage()
+        {
+            Console.WriteLine("Ronde 2 telah berakhir\nSkor akhir P1 : " + papanDakon1.listLubang[8].marblesCount + " P2 : " + papanDakon1.listLubang[0].marblesCount);
+            String winner = "";
 
+            if (papanDakon1.listLubang[8].marblesCount > papanDakon1.listLubang[0].marblesCount)
+                winner = "Player 1";
+            else
+                winner = "Player 2";
+
+            Console.WriteLine("Permainan dimenangkan oleh "+winner);
+        }
 
         public static void printGetAdditionlRoundMessage()
         {
