@@ -20,10 +20,90 @@ Ronde 2
 
 Testcase :
 
+Round 1
 1. P1 Wins 62-36 :
-5 5 5 6 4 1 1 6 4 7 3 2 7 7 1 2 6 3 3 2 1 4 4 1 7 6 7 2 5 1 5 3 7 2 6 7 1 3 5 5 7 X 6 X 7
+5
+5
+5
+6
+4
+1
+1
+6
+4
+7
+3
+2
+7
+7
+1
+2
+6
+3
+3
+2
+1
+4
+4
+1
+7
+6
+7
+2
+5
+1
+5
+3
+7
+2
+6
+7
+1
+3
+5
+5
+7
+1
+6
+1
+7
 
 2. P2 Wins 52-46 :
-3 1 1 6 7 3 4 6 1 2 4 7 5 4 4 1 6 5 7 7 1 7 4 5 7 2 7 6 7 3 3 2 6 3 7 X 5 7
-
-*Note X pada input artinya pilih angka terserah antara 1-7 karena pada giliran tersebut semua lubang milik player telah kosong
+3
+1
+1
+6
+7
+3
+4
+6
+1
+2
+4
+7
+5
+4
+4
+1
+6
+5
+7
+7
+1
+7
+4
+5
+7
+2
+7
+6
+7
+3
+3
+2
+6
+3
+7
+1
+5
+7
